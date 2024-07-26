@@ -1,6 +1,6 @@
 fastapi>=0.109.1
 uvicorn==0.15.0
-requests==2.26.0
+requests==2.32.0
 pytesseract==0.3.8
 Pillow>=10.3.0
 
