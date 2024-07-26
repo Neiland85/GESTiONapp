@@ -21,4 +21,8 @@ jobs:
       run: |
         source venv/bin/activate
         python -m unittest discover tests
+    - name: Cleanup
+      run: |
+        deactivate
+        rm -rf venv
 
