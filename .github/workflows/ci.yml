@@ -23,6 +23,5 @@ jobs:
         python -m unittest discover tests
     - name: Cleanup
       run: |
-        deactivate
         rm -rf venv
 
