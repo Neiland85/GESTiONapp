@@ -1,20 +1,16 @@
 # tests/test_file_processor.py
-
 import unittest
-from app.controllers.file_processor import process_file
-from fastapi import UploadFile
-from io import BytesIO
+from fastapi.testclient import TestClient
+from main import app
 
-class MockUploadFile(UploadFile):
-    def __init__(self, filename, content):
-        super().__init__(filename=filename, file=BytesIO(content.encode()))
+client = TestClient(app)
 
-class TestFileProcessor(unittest.TestCase):
-    def test_process_file(self):
-        mock_file = MockUploadFile(filename="test.txt", content="This is a test file.")
-        result = process_file(mock_file)
-        self.assertIsInstance(result, dict)
-        self.assertEqual(result["status"], "processed")
+class TestFileUpload(unittest.TestCase):
+    def test_upload_files(self):
+        with open("test_file.pdf", "rb") as file:
+            response = client.post("/upload/", files={"files": file})
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("Files successfully uploaded", response.json()["message"])
 
 if __name__ == '__main__':
     unittest.main()
