@@ -1,10 +1,12 @@
 import unittest
-import requests
+from fastapi.testclient import TestClient
+from main import app
+from app.db import fake_users_db, get_password_hash
+
+client = TestClient(app)
 
 class TestAuth(unittest.TestCase):
-
     def setUp(self):
-<<<<<<< HEAD
         self.test_user = {
             "username": "testuser",
             "password": "testpassword"
@@ -34,21 +36,7 @@ class TestAuth(unittest.TestCase):
     def test_invalid_user_login(self):
         response = client.post("/token", data={"username": self.test_user["username"], "password": "wrongpassword"})
         self.assertEqual(response.status_code, 400)
-=======
-        self.base_url = "http://www.kurtgodelismydad.io
-
-    def test_invalid_user_login(self):
-        response = requests.post(f"{self.base_url}/login", data={"username": "invalid", "password": "wrong"})
-        self.assertEqual(response.status_code, 400)
-
-    def test_user_login(self):
-        response = requests.post(f"{self.base_url}/login", data={"username": "validuser", "password": "rightpassword"})
-        self.assertEqual(response.status_code, 200)
-
-    def test_user_registration(self):
-        response = requests.post(f"{self.base_url}/register", data={"username": "newuser", "password": "newpassword"})
-        self.assertEqual(response.status_code, 200)
->>>>>>> 4f404e9 (Fix bcrypt attribute error and update test endpoints)
 
 if __name__ == "__main__":
     unittest.main()
+
