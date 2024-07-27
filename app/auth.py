@@ -5,6 +5,15 @@ from passlib.context import CryptContext
 from fastapi.security import OAuth2PasswordBearer
 from fastapi import Depends, HTTPException, status
 from app.models import UserInDB
+from pydantic import BaseModel
+
+class User(BaseModel):
+    username: str
+    password: str
+
+class UserInDB(User):
+    hashed_password: str
+    role: str
 
 SECRET_KEY = "secret"
 ALGORITHM = "HS256"
