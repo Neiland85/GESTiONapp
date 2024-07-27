@@ -25,18 +25,17 @@ class TestAuth(unittest.TestCase):
 
     def test_user_registration(self):
         response = client.post("/register/", json=self.test_user)
-        assert response.status_code == 200
-        assert response.json()["username"] == self.test_user["username"]
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()["username"], self.test_user["username"])
 
     def test_user_login(self):
         response = client.post("/token", data={"username": self.test_user["username"], "password": self.test_user["password"]})
-        assert response.status_code == 200
-        assert "access_token" in response.json()
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("access_token", response.json())
 
     def test_invalid_user_login(self):
         response = client.post("/token", data={"username": self.test_user["username"], "password": "wrongpassword"})
-        assert response.status_code == 400
+        self.assertEqual(response.status_code, 400)
 
 if __name__ == "__main__":
     unittest.main()
-
