@@ -1,6 +1,8 @@
 from app.main import create_app
+import os
 
-app = create_app()
+config_name = os.getenv('FLASK_ENV') or 'dev'
+app = create_app(config_name)
 
 if __name__ == "__main__":
     import uvicorn
