@@ -1,16 +1,28 @@
 from datetime import datetime, timedelta
 from typing import Optional
-from fastapi import Depends, HTTPException
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jose import JWTError, jwt
-from app.models import TokenData, UserInDB
-from app.db import fake_users_db, verify_password
+from passlib.context import CryptContext
+from fastapi.security import OAuth2PasswordBearer
+from fastapi import Depends, HTTPException, status
+from app.models import UserInDB
 
-SECRET_KEY = "your_secret_key"
+# Para este ejemplo, estoy usando una clave secreta fija y un algoritmo de firma
+SECRET_KEY = "secret"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+fake_users_db = {
+    "johndoe": UserInDB(username="johndoe", hashed_password="$2b$12$KIXj.zYBl3CSw.Ev5PfC/Oy0kWjTbnJ1G1N.3Z2JGtIVS7Xr7Y.zG", role="user")
+}
+
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/token")
+
+def verify_password(plain_password, hashed_password):
+    return pwd_context.verify(plain_password, hashed_password)
+
+def get_password_hash(password):
+    return pwd_context.hash(password)
 
 def authenticate_user(fake_db, username: str, password: str):
     user = fake_db.get(username)
@@ -32,7 +44,7 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
 
 async def get_current_user(token: str = Depends(oauth2_scheme)):
     credentials_exception = HTTPException(
-        status_code=401,
+        status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
         headers={"WWW-Authenticate": "Bearer"},
     )
@@ -41,16 +53,12 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
         username: str = payload.get("sub")
         if username is None:
             raise credentials_exception
-        token_data = TokenData(username=username)
     except JWTError:
         raise credentials_exception
-    user = fake_users_db.get(token_data.username)
+    user = fake_users_db.get(username)
     if user is None:
         raise credentials_exception
     return user
 
-async def get_current_active_user(current_user: UserInDB = Depends(get_current_user)):
-    if current_user.role != "active":
-        raise HTTPException(status_code=400, detail="Inactive user")
-    return current_user
-
+async def get_current_active_user_role(current_user: UserInDB = Depends(get_current_user)):
+    return current_user.role
