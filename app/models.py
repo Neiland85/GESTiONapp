@@ -1,19 +1,19 @@
 from pydantic import BaseModel
 from typing import Optional
 
-class Document(BaseModel):
-    id: int
-    name: str
-    content: str
-    processed: bool
+class User(BaseModel):
+    username: str
+    password: str
 
-class ProcessingHistory(BaseModel):
-    document_id: int
-    filename: str
-    status: str
-    timestamp: str  # Considera usar datetime
+class UserInDB(User):
+    hashed_password: str
+    role: str
 
-class Notification(BaseModel):
-    email: str
-    message: str
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+class TokenData(BaseModel):
+    username: Optional[str] = None
+    role: Optional[str] = None
 
