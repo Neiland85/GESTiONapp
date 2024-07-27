@@ -17,8 +17,13 @@ jobs:
         python -m venv venv
         source venv/bin/activate
         pip install -r requirements.txt
+    - name: Create test files
+      run: |
+        mkdir -p tests/test_files
+        touch tests/test_files/test.jpg
+        touch tests/test_files/test.pdf
+        touch tests/test_files/test.png
     - name: Run tests
       run: |
         source venv/bin/activate
         python -m unittest discover tests
-
