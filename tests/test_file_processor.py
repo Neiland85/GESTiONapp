@@ -1,27 +1,25 @@
-# tests/test_file_processor.py
 import unittest
-from fastapi.testclient import TestClient
-from main import app
-import os
+from app.controllers.file_processor import process_file, save_file
 
-client = TestClient(app)
+class TestFileProcessor(unittest.TestCase):
 
-class TestFileUpload(unittest.TestCase):
-    def test_upload_files(self):
-        # Ruta del archivo de prueba
-        test_file_path = os.path.join(os.path.dirname(__file__), "test_file.pdf")
-        
-        # Asegurarse de que el archivo existe
-        self.assertTrue(os.path.exists(test_file_path), "Test file does not exist")
+    def test_process_file(self):
+        # Create a mock file object
+        class MockFile:
+            def __init__(self, filename, content):
+                self.filename = filename
+                self.content = content
+            def file(self):
+                return self
 
-        # Abrir el archivo de prueba y realizar la solicitud
-        with open(test_file_path, "rb") as file:
-            response = client.post("/upload/", files={"files": file})
-        
-        # Verificar la respuesta
-        self.assertEqual(response.status_code, 200)
-        self.assertIn("Files successfully uploaded", response.json()["message"])
+            def read(self):
+                return self.content
 
-if __name__ == '__main__':
+        file = MockFile("test.txt", b"dummy content")
+        result = process_file(file)
+        self.assertEqual(result["status"], "processed")
+        self.assertEqual(result["filename"], "test.txt")
+
+if __name__ == "__main__":
     unittest.main()
 

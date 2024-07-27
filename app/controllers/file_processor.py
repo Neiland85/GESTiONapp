@@ -3,6 +3,6 @@ def save_file(file, file_path):
         buffer.write(file.file.read())
 
 def process_file(file):
-    # Lógica para procesar el archivo
+    # Logic to process the file
     return {"status": "processed", "filename": file.filename}
 

@@ -2,7 +2,7 @@ from fastapi import FastAPI, UploadFile, File, HTTPException
 from typing import List
 import os
 
-from app.file_processor import save_file  # Asumiendo que tienes esta función
+from app.controllers.file_processor import save_file
 
 app = FastAPI()
 
