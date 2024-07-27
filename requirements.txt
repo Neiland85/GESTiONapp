@@ -1,4 +1,4 @@
 fastapi==0.75.0
 uvicorn==0.17.0
-python-jose==3.3.0
+pyjwt==2.4.0
 passlib==1.7.4
