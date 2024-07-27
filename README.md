@@ -13,29 +13,21 @@ GESTiONapp es una aplicación diseñada para la gestión y procesamiento de docu
 
 ## Estructura del Proyecto
 
-├── README.md
-├── main.py
-├── requirements.txt
-├── app
-│ ├── init.py
-│ ├── models.py
-│ ├── views.py
-│ ├── controllers
-│ │ ├── init.py
-│ │ ├── file_processor.py
-│ │ ├── ocr.py
-│ │ ├── classifier.py
-│ │ └── government_api.py
-├── tests
-│ ├── init.py
-│ ├── test_file_processor.py
-│ ├── test_ocr.py
-│ ├── test_classifier.py
-│ └── test_government_api.py
-└── docs
-├── api_documentation.md
-├── user_guide.md
-└── developer_guide.md
+/GESTiONapp
+│
+├── /frontend
+│   ├── src
+│   │   ├── components
+│   │   │   └── FileUpload.js
+│   │   └── App.js
+│   └── package.json
+│
+├── /backend
+│   ├── app.py
+│   └── requirements.txt
+│
+└── /tests
+    ├── test_upload.py
 
 
 ## Instalación
