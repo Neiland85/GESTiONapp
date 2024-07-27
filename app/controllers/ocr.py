@@ -1,5 +1,5 @@
-from pytesseract import image_to_string
 from PIL import Image
+from pytesseract import image_to_string
 
 def ocr_extraction(image_path):
     image = Image.open(image_path)

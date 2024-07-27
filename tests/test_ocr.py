@@ -1,5 +1,3 @@
-# tests/test_ocr.py
-
 import unittest
 from app.controllers.ocr import ocr_extraction
 from unittest.mock import patch, MagicMock
