@@ -1,5 +1,8 @@
 from app.main import create_app
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 config_name = os.getenv('ENV', 'dev')
 app = create_app(config_name)
