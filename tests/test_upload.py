@@ -1,20 +1,18 @@
 import unittest
-from fastapi.testclient import TestClient
-from app.main import app
+from your_flask_app import app
 
 class TestUpload(unittest.TestCase):
+
     def setUp(self):
-        self.client = TestClient(app)
+        self.app = app.test_client()
+        self.app.testing = True
 
     def test_upload_file(self):
-        with open("testfile.txt", "wb") as f:
-            f.write(b"this is a test file")
-
-        with open("testfile.txt", "rb") as f:
-            response = self.client.post("/upload", files={"file": f})
-        
+        with open('path/to/your/test/file.txt', 'rb') as file:
+            response = self.app.post('/upload', data={'file': file})
         self.assertEqual(response.status_code, 200)
-        self.assertIn("filename", response.json())
+        self.assertIn('File uploaded successfully', response.data.decode())
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()
+
