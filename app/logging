@@ -1,0 +1,18 @@
+import logging
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+@app.route('/example')
+def example_route():
+    try:
+        logger.info('Example route called')
+        # Your code here
+        pass
+    except ValueError as e:
+        logger.error(f'Value error: {str(e)}')
+        raise CustomError(f'Value error occurred: {str(e)}', 400)
+    except Exception as e:
+        logger.critical(f'Unexpected error: {str(e)}')
+        raise CustomError(f'An unexpected error occurred: {str(e)}', 500)
+
