@@ -1,8 +1,4 @@
-fastapi>=0.65.2
-uvicorn>=0.13.4
-requests>=2.25.1
-pytesseract>=0.3.8
-Pillow>=8.2.0
-passlib>=1.7.4
-pyjwt>=2.4.0
-bcrypt==3.2.0
+fastapi==0.75.0
+uvicorn==0.17.0
+python-jose==3.3.0
+passlib==1.7.4
