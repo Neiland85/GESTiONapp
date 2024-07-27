@@ -2,11 +2,13 @@ from passlib.context import CryptContext
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-fake_users_db = {}
-
 def get_password_hash(password):
     return pwd_context.hash(password)
 
-def verify_password(plain_password, hashed_password):
-    return pwd_context.verify(plain_password, hashed_password)
-
+fake_users_db = {
+    "johndoe": {
+        "username": "johndoe",
+        "hashed_password": get_password_hash("secret"),
+        "role": "user",
+    }
+}
