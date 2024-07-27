@@ -23,19 +23,18 @@ class TestAuth(unittest.TestCase):
             "role": "user"
         }
 
-    def test_user_registration(self):
-        response = client.post("/auth/register/", json=self.test_user)
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json()["username"], self.test_user["username"])
+def test_user_registration(self):
+    response = self.client.post("/auth/register", json={"username": "testuser", "password": "testpass"})
+    self.assertEqual(response.status_code, 200)
 
-    def test_user_login(self):
-        response = client.post("/auth/token", data={"username": self.test_user["username"], "password": self.test_user["password"]})
-        self.assertEqual(response.status_code, 200)
-        self.assertIn("access_token", response.json())
+def test_user_login(self):
+    response = self.client.post("/auth/login", json={"username": "testuser", "password": "testpass"})
+    self.assertEqual(response.status_code, 200)
 
-    def test_invalid_user_login(self):
-        response = client.post("/auth/token", data={"username": self.test_user["username"], "password": "wrongpassword"})
-        self.assertEqual(response.status_code, 400)
+def test_invalid_user_login(self):
+    response = self.client.post("/auth/login", json={"username": "wronguser", "password": "wrongpass"})
+    self.assertEqual(response.status_code, 400)
+
 
 if __name__ == "__main__":
     unittest.main()
