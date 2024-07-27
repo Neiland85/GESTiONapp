@@ -1,21 +1,22 @@
 import unittest
-from fastapi.testclient import TestClient
-from app.main import app
+from your_app import app
 
 class TestErrorHandling(unittest.TestCase):
+
     def setUp(self):
-        self.client = TestClient(app)
+        self.app = app.test_client()
+        self.app.testing = True
 
-    def test_item_not_found(self):
-        response = self.client.get("/items/9999")
-        self.assertEqual(response.status_code, 404)
-        self.assertEqual(response.json(), {"detail": "Item with id 9999 not found"})
+    def test_value_error(self):
+        response = self.app.get('/example?cause=value_error')
+        self.assertEqual(response.status_code, 400)
+        self.assertIn('Value error occurred', response.data.decode())
 
-    def test_user_not_authorized(self):
-        response = self.client.get("/admin")
-        self.assertEqual(response.status_code, 403)
-        self.assertEqual(response.json(), {"detail": "User not authorized to perform this action"})
+    def test_internal_error(self):
+        response = self.app.get('/example?cause=internal_error')
+        self.assertEqual(response.status_code, 500)
+        self.assertIn('Internal server error', response.data.decode())
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()
 
