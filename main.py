@@ -1,8 +1,11 @@
 from fastapi import FastAPI, UploadFile, File
 from typing import List
 import os
+from app.controllers.views import router as auth_router
 
 app = FastAPI()
+
+app.include_router(auth_router, prefix="/auth")
 
 UPLOAD_DIRECTORY = "./uploads"
 
@@ -20,4 +23,3 @@ async def upload_files(files: List[UploadFile] = File(...)):
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
-
